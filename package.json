@@ -1,0 +1,19 @@
+{
+  "name": "utall",
+  "version": "0.0.0",
+  "description": "Utility library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests implemented\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Blissful89/utall.git"
+  },
+  "author": "Marco van Harten",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Blissful89/utall/issues"
+  },
+  "homepage": "https://github.com/Blissful89/utall#readme"
+}
