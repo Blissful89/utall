@@ -1,0 +1,34 @@
+{
+"extends": [
+    "airbnb-base",
+    "eslint:recommended"
+],
+    "plugins"       : ["align-assignments"],
+    "parser"        : "@babel/eslint-parser",
+    "parserOptions" : { "requireConfigFile": false },
+    "ignorePatterns": "cjs/**/*",
+    "rules"         : {
+        "no-console"                          : ["warn", { "allow": ["warn", "error"] }],
+        "no-unused-vars"                      : "warn",
+        "no-spaced-func"                      : "off",
+        "no-multi-spaces"                     : "off",
+        "object-curly-newline"                : ["error", { "multiline": true }],
+        "import/no-anonymous-default-export"  : "off",
+        "import/prefer-default-export"        : "off",
+        "max-len"                             : ["error", { "code": 160 }],
+        "lines-between-class-members"         : "off",
+        "semi"                                  : ["error", "never"],
+        "align-assignments/align-assignments" : [1, { "requiresOnly": false }],
+        "key-spacing"                         : ["error", {
+            "multiLine": {
+                "beforeColon" : false,
+                "afterColon"  : true
+            },
+            "align": {
+                "beforeColon" : true,
+                "afterColon"  : true,
+                "on"          : "colon"
+            }
+        }]
+    }
+}
