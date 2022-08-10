@@ -1,0 +1,50 @@
+{
+"extends": [
+    "airbnb-base",
+    "airbnb-typescript/base",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+],
+  "plugins": ["align-assignments"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": { "project": "./**/tsconfig.json" },
+  "settings": { "import/resolver": { "typescript": { "project": "./tsconfig.json" } } },
+  "ignorePatterns": [ "dist", "node_modules", "coverage" ],
+  "rules" : {
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/semi": "off",
+    "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/lines-between-class-members": "off",
+    "@next/next/no-html-link-for-pages": "off",
+    "react-hooks/rules-of-hooks": "off",
+    "no-console": "off",
+    "no-unused-vars": "warn",
+    "no-undef": "off",
+    "no-param-reassign": "off",
+    "no-spaced-func": "off",
+    "no-multi-spaces": "off",
+    "object-curly-newline": ["error", { "multiline": true }],
+    "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off",
+    "react/jsx-props-no-spreading": "off",
+    "import/no-anonymous-default-export": "off",
+    "max-len": ["error", { "code": 160 }],
+    "lines-between-class-members": "off",
+    "semi": ["error", "never"],
+    "align-assignments/align-assignments": [1, { "requiresOnly": false }],
+    "key-spacing": ["error", {
+      "multiLine": {
+          "beforeColon": false,
+          "afterColon": true
+      },
+      "align": {
+          "beforeColon": true,
+          "afterColon": true,
+          "on": "colon"
+      }
+    }]
+  }
+}
