@@ -1,3 +1,7 @@
-cjs
+# Dependencies
 node_modules
 package-lock.json
+
+# Builds
+coverage
+dist
