@@ -8,3 +8,4 @@ dist
 
 # Env
 .npmrc
+.DS_STORE
