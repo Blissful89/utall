@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [ "src/**/*.ts", "index.ts" ],
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "ESNext",
+    "declaration": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "outDir": "dist/esm"
+  }
+}

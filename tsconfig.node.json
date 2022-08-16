@@ -2,11 +2,11 @@
   "extends": "./tsconfig.json",
   "include": [ "src/**/*.ts", "index.ts" ],
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
+    "target": "ES5",
+    "module": "CommonJS",
     "declaration": true,
     "resolveJsonModule": true,
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist/cjs"
   }
 }
