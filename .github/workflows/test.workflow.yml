@@ -1,5 +1,5 @@
 name: Test
-run-name: Testing '${{ github.ref_name }}' 🧪...
+run-name: Testing '${{ github.event.pull_request.title || github.ref_name }}' 🧪...
 on: [pull_request, workflow_dispatch]
 jobs:
   dependencies:
