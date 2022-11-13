@@ -13,4 +13,4 @@ Utility library (known for `Monad`)
 
 | name | import ||
 |-|-|-
-|[Monad](./docs/Monad.md)| `utal/monad` |Monad for pipeline functionality.
+|[Monad](./docs/monad.md)| `utal/monad` |Monad for pipeline functionality.
