@@ -1,0 +1,29 @@
+name: Dependencies Job
+run-name: Verify node_modules 📦...
+on: [workflow_call]
+jobs:
+  verify_node_modules:
+    name: Verify node modules 📦...
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Cache node_modules
+      id: cache-node-modules
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+
+    - name: List the state of node modules
+      if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
+      continue-on-error: true
+      run: yarn list
+
+    - name: Install dependencies
+      if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
+      run: yarn install --ignore-scripts
