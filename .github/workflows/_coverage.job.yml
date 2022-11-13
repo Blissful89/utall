@@ -1,0 +1,31 @@
+name: Coverage Job
+run-name: Coverage 📰...
+on: [workflow_call]
+jobs:
+  test:
+    name: Coverage 📰...
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Cache node_modules
+      id: cache-node-modules
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Test repository
+      run: yarn test
+
+    - name: Coverage
+      uses: codecov/codecov-action@v3
+      with:
+        directory: ./coverage
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: true
