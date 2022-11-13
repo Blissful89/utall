@@ -1,0 +1,23 @@
+name: Lint Job
+run-name: Linting 🔬...
+on: [workflow_call]
+jobs:
+  lint:
+    name: Linting 🔬...
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Cache node_modules
+      id: cache-node-modules
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Lint repository
+      run: yarn lint
