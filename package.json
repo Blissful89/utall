@@ -21,12 +21,19 @@
   },
   "author": "Marco van Harten",
   "license": "MIT",
+  "keywords": [
+    "utility",
+    "util",
+    "monad",
+    "async",
+    "promise"
+  ],
   "bugs": {
     "url": "https://github.com/Blissful89/utall/issues"
   },
   "homepage": "https://github.com/Blissful89/utall#readme",
   "engines": {
-    "node": ">= 18",
+    "node": ">= 16",
     "yarn": ">= 1"
   },
   "dependencies": {},
