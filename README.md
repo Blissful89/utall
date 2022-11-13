@@ -1,6 +1,7 @@
 # ![Utall](logo.png)
 
 ![Build Status](https://github.com/blissful89/utall/actions/workflows/test.workflow.yml/badge.svg)
+![codecov](https://img.shields.io/codecov/c/github/Blissful89/utall)
 ![Issues Open](https://img.shields.io/github/issues/Blissful89/utall)
 ![Licenses](https://img.shields.io/github/license/Blissful89/utall)
 ![Bundle Size](https://img.shields.io/bundlephobia/min/utall)
