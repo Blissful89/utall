@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/Blissful89/utall#readme",
   "engines": {
-    "node": ">= 16",
+    "node": ">= 8",
     "yarn": ">= 1"
   },
   "dependencies": {},
