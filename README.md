@@ -1,16 +1,20 @@
 # ![Utall](logo.png)
 
-![Build Status](https://github.com/blissful89/utall/actions/workflows/test.workflow.yml/badge.svg)
-![codecov](https://img.shields.io/codecov/c/github/Blissful89/utall)
-![Issues Open](https://img.shields.io/github/issues/Blissful89/utall)
-![Licenses](https://img.shields.io/github/license/Blissful89/utall)
-![Bundle Size](https://img.shields.io/bundlephobia/min/utall)
+[![Build Status][]](https://github.com/Blissful89/utall/actions/workflows/test.workflow.yml)
+[![Code Coverage][]](https://codecov.io/gh/Blissful89/utall/branch/master)
+[![Issues Open][]](https://github.com/Blissful89/utall/issues)
+[![Licenses][]](./LICENSE)
+[![Bundle Size][]](https://bundlephobia.com/package/utall)
+[![NPM][]](https://www.npmjs.com/package/utall)
+
+[Build Status]: https://github.com/blissful89/utall/actions/workflows/test.workflow.yml/badge.svg
+[Code Coverage]: https://img.shields.io/codecov/c/github/Blissful89/utall
+[Issues Open]: https://img.shields.io/github/issues/Blissful89/utall
+[Licenses]: https://img.shields.io/github/license/Blissful89/utall
+[Bundle Size]: https://img.shields.io/bundlephobia/min/utall
+[NPM]: https://img.shields.io/npm/v/utall
 
 General purpose utility library
-
-> **Latest version:**
->
-> ![Tag](https://img.shields.io/github/v/tag/Blissful89/utall) ![NPM](https://img.shields.io/npm/v/utall)
 
 ---
 
@@ -30,28 +34,33 @@ General purpose utility library
 
 ### Monad
 
-**Constructor**  
+Constructor
+--- 
 ```javascript
 const simple = new Monad(value)
 const { value, logs } = new Monad<T>(value, []) // Value of type T
 ```
 
-**Usage**  
+Usage
+---
 Monad is class based. It can be initiated with a contructor
 > For debugging and error handling the log array can be added to the constructor. 
 > This will impact the performance of the `Monad`.
 
-**Apply**  
+Apply
+---
 Applies a function to the current value and returns a new `Monad`.
 
-**Promise / resolve**  
+Promise / resolve
+---
 Promise adds a promise to the stack and returns a `PromisedMonad`.
 Resolve resolves all tasks in the `PromisedMonad` and returns back the `Promise<Monad>`.
 
 
 >Functions [apply](#apply) and [promise](#promise--resolve) accept extra arguments. This allows for the combination of different monads (see [example](#examples))
 
-**All**  
+All
+---
 A static function to resolve multiple `PromisedMonads` in parallel (Promise.all)
 
 #### Examples
