@@ -1,4 +1,4 @@
-name: Releasing
+name: Release
 run-name: Releasing '${{ github.ref_name }}' 🚀...
 on: [release]
 jobs:
