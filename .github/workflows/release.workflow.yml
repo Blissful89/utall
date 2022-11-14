@@ -2,7 +2,7 @@ name: Release
 run-name: Releasing '${{ github.ref_name }}' 🚀...
 on:
   release:
-    types: [published]
+    types: [created]
 jobs:
   dependencies:
     name: Verify dependencies 📦...
