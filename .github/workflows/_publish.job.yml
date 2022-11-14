@@ -1,6 +1,6 @@
 name: Publish Job
 run-name: Publishing 🚀...
-on: [push]
+on: [workflow_call]
 jobs:
   lint:
     name: Publishing 🚀...
@@ -22,12 +22,9 @@ jobs:
     - name: Build repository
       run: yarn build
 
-    - name: Inject .npmrc
+    - name: Publish build
       run: |
         echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > .npmrc
-        cat .npmrc
+        npm publish
       env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-    # - name: Publish build
-    #   run: npm publish
