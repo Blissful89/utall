@@ -6,6 +6,8 @@ on:
     branches:
       - master
       - develop
+    paths:
+      - "**/yarn.lock"
 jobs:
   dependencies:
     name: Verify dependencies 📦...

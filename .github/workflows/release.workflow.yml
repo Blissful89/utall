@@ -1,6 +1,8 @@
-name: Releasing
+name: Release
 run-name: Releasing '${{ github.ref_name }}' 🚀...
-on: [release]
+on:
+  release:
+    types: [created]
 jobs:
   dependencies:
     name: Verify dependencies 📦...

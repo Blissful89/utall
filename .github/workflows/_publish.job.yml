@@ -22,7 +22,10 @@ jobs:
     - name: Build repository
       run: yarn build
 
+    - name: Inject .npmrc
+      run: echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > .npmrc
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
     - name: Publish build
-      uses: JS-DevTools/npm-publish@v1
-      with:
-        token: ${{ secrets.NPM_TOKEN }}
+      run: npm publish

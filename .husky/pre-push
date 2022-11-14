@@ -8,13 +8,20 @@ then
   exit 0
 fi
 
+function version { echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }'; }
+
 read_latest_tag="$(git describe --abbrev=0 --tags)"
 read_npm_version=$(node -p "require('./package.json').version")
 
-if [ $read_latest_tag != $read_npm_version ]
-then
-  echo "Tag $read_latest_tag does not match version $read_npm_version in package.json. Aborting push and removing tag..."
-  git tag -d $read_latest_tag
-  echo "Please remember to bump package.json version together with tagging"
-  exit 1
+if [ $(version $read_latest_tag) -gt $(version $read_npm_version) ]; then
+    echo "Tag $read_latest_tag is higher than version $read_npm_version in package.json. Aborting push and removing tag..."
+    git tag -d $read_latest_tag
+    echo "Please remember to bump package.json version together with tagging"
+    exit 1
+fi
+
+if [ $(version $read_latest_tag) -lt $(version $read_npm_version) ]; then
+    echo "Tag $read_latest_tag is lower than version $read_npm_version in package.json. Aborting push..."
+    echo "Please remember to tag together with bump package.json"
+    exit 1
 fi
