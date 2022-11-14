@@ -1,10 +1,12 @@
 {
   "name": "utall",
   "version": "1.0.0",
-  "description": "Utility library",
+  "description": "⚙️ Utility library ⚙️",
   "module": "dist/esm/index.js",
   "main": "dist/cjs/index.js",
-  "files": [ "dist/**" ],
+  "files": [
+    "dist/**"
+  ],
   "scripts": {
     "build": "run-p build:node build:browser",
     "build:browser": "tsc --project tsconfig.browser.json",
@@ -22,11 +24,14 @@
   "author": "Marco van Harten",
   "license": "MIT",
   "keywords": [
-    "utility",
-    "util",
-    "monad",
     "async",
-    "promise"
+    "asynchronous",
+    "browser",
+    "monad",
+    "node",
+    "promise",
+    "utility",
+    "util"
   ],
   "bugs": {
     "url": "https://github.com/Blissful89/utall/issues"
