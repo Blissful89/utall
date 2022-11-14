@@ -20,6 +20,8 @@ if [ $(version $read_latest_tag) -gt $(version $read_npm_version) ]; then
     exit 1
 fi
 
-if [ $(version $read_latest_tag) -le $(version $read_npm_version) ]; then
-    echo "Tag $read_latest_tag is lower than version $read_npm_version in package.json. You have been warned..."
+if [ $(version $read_latest_tag) -lt $(version $read_npm_version) ]; then
+    echo "Tag $read_latest_tag is lower than version $read_npm_version in package.json. Aborting push..."
+    echo "Please remember to tag together with bump package.json"
+    exit 1
 fi
