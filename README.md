@@ -6,6 +6,7 @@
 [![Licenses][]](./LICENSE)
 [![Bundle Size][]](https://bundlephobia.com/package/utall)
 [![NPM][]](https://www.npmjs.com/package/utall)
+[![Release][]](https://github.com/Blissful89/utall/releases)
 
 [Build Status]: https://github.com/blissful89/utall/actions/workflows/test.workflow.yml/badge.svg
 [Code Coverage]: https://img.shields.io/codecov/c/github/Blissful89/utall
@@ -13,6 +14,7 @@
 [Licenses]: https://img.shields.io/github/license/Blissful89/utall
 [Bundle Size]: https://img.shields.io/bundlephobia/min/utall
 [NPM]: https://img.shields.io/npm/v/utall
+[Release]: https://img.shields.io/github/release-date/Blissful89/utall
 
 General purpose utility library
 
