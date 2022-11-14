@@ -155,3 +155,7 @@ A static function to resolve multiple `PromisedMonads` in parallel (Promise.all)
     console.log(log1)   // [2,3]
     console.log(log2)   // [11,12]
     ```
+
+## License
+
+[MIT licensed](LICENSE)
