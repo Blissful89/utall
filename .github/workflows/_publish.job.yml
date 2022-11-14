@@ -23,12 +23,9 @@ jobs:
       run: yarn build
 
     - name: Inject .npmrc
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16.x'
-        registry-url: 'https://registry.npmjs.org'
+      run: echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > .npmrc
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     - name: Publish build
       run: npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
