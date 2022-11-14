@@ -1,0 +1,17 @@
+name: Update
+run-name: Updating branch '${{ github.ref_name }}' 🔄...
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+      - master
+jobs:
+  dependencies:
+    name: Verify dependencies 📦...
+    uses: ./.github/workflows/_dependencies.job.yml
+
+  coverage:
+    name: Running coverage tests 📰...
+    needs: [dependencies]
+    if: github.ref == 'refs/heads/master'
+    uses: ./.github/workflows/_coverage.job.yml

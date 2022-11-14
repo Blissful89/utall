@@ -4,7 +4,6 @@ on:
   workflow_dispatch: {}
   push:
     branches:
-      - master
       - develop
     paths:
       - "**/yarn.lock"
@@ -12,9 +11,3 @@ jobs:
   dependencies:
     name: Verify dependencies 📦...
     uses: ./.github/workflows/_dependencies.job.yml
-
-  coverage:
-    name: Running coverage tests 📰...
-    needs: [dependencies]
-    if: github.ref == 'refs/heads/master'
-    uses: ./.github/workflows/_coverage.job.yml
