@@ -8,17 +8,7 @@ jobs:
     name: Verify dependencies 📦...
     uses: ./.github/workflows/_dependencies.job.yml
 
-  lint:
-    name: Linting 🔬...
-    needs: [dependencies]
-    uses: ./.github/workflows/_lint.job.yml
-
-  test:
-    name: Testing 🐞...
-    needs: [dependencies]
-    uses: ./.github/workflows/_test.job.yml
-
   publish:
     name: Publishing 🚀...
-    needs: [lint,test]
     uses: ./.github/workflows/_publish.job.yml
+    secrets: inherit
