@@ -10,5 +10,6 @@ jobs:
 
   publish:
     name: Publishing 🚀...
+    needs: [dependencies]
     uses: ./.github/workflows/_publish.job.yml
     secrets: inherit
