@@ -1,6 +1,9 @@
 type Func = (...args: any) => any | Promise<any>
 
-class Monad<T> {
+/**
+ * The base of a Monad
+ */
+class MonadBase<T> {
   value: T
   log
 
@@ -15,8 +18,8 @@ class Monad<T> {
   }
 
   protected finish(skip = false) {
-    if (!this.log || skip) return new Monad<T>(this.value, this.log)
-    return new Monad<T>(this.value, [...this.log, this.value])
+    if (!this.log || skip) return new MonadBase<T>(this.value, this.log)
+    return new MonadBase<T>(this.value, [...this.log, this.value])
   }
 
   promise(func: Func, ...args: any) {
@@ -26,46 +29,55 @@ class Monad<T> {
   static all<T>(promisedMonads: PromisedMonad<any>[]) {
     return Promise.all<Monad<T>>(promisedMonads.map((monad) => monad.resolve()))
   }
+}
 
-  static Maybe = class Maybe<M> extends Monad<M> {
-    private before
+/**
+ * Maybe extension
+ */
+class Maybe<M> extends MonadBase<M> {
+  private before
 
-    constructor(value?: any, log?: any[] | null, before?: Func) {
-      super(value, log)
-      this.before = before
-    }
-
-    apply(func: Func, ...args: any): Maybe<M> {
-      if (this.value === null) return this
-      if (this.value === undefined) return this
-      if (this.before && !this.before(this.value)) return this
-      const { value, log } = super.apply(func, ...args)
-      return new Maybe(value, log)
-    }
+  constructor(value?: any, log?: any[] | null, before?: Func) {
+    super(value, log)
+    this.before = before
   }
 
-  static Either = class Either<E> extends Monad<E> {
-    apply(leftFunc: Func, rightFunc: Func, ...args: any): Either<E> {
-      try {
-        const { value, log } = super.apply(rightFunc, ...args)
-        return new Either(value, log)
-      } catch {
-        const { value, log } = super.apply(leftFunc, ...args)
-        return new Either(value, log)
-      }
-    }
-
-    fold(maybe = false) {
-      if (maybe) return new Monad.Maybe<E>(this.value, this.log)
-      return new Monad<E>(this.value, this.log)
-    }
+  apply(func: Func, ...args: any): Maybe<M> {
+    if (this.value === null) return this
+    if (this.value === undefined) return this
+    if (this.before && !this.before(this.value)) return this
+    const { value, log } = super.apply(func, ...args)
+    return new Maybe(value, log)
   }
 }
 
-class PromisedMonad<T> extends Monad<T> {
+/**
+ * Either extension
+ */
+class Either<E> extends MonadBase<E> {
+  apply(leftFunc: Func, rightFunc: Func, ...args: any): Either<E> {
+    try {
+      const { value, log } = super.apply(rightFunc, ...args)
+      return new Either(value, log)
+    } catch {
+      const { value, log } = super.apply(leftFunc, ...args)
+      return new Either(value, log)
+    }
+  }
+
+  fold(maybe = false) {
+    if (maybe) return new Maybe<E>(this.value, this.log)
+    return new MonadBase<E>(this.value, this.log)
+  }
+}
+
+/**
+ * Promise extension
+ */
+class PromisedMonad<T> extends MonadBase<T> {
   private tasks
 
-  constructor(maybe: Monad<T>, tasks: [Func, any][]) {
+  constructor(maybe: MonadBase<T>, tasks: [Func, any][]) {
     super(maybe.value, maybe.log)
     this.tasks = tasks
   }
@@ -85,4 +97,7 @@ class PromisedMonad<T> extends Monad<T> {
   }
 }
 
-export default Monad
+export default class Monad<T> extends MonadBase<T> {
+  static Maybe = Maybe
+  static Either = Either
+}
