@@ -61,9 +61,19 @@ Resolve resolves all tasks in the `PromisedMonad` and returns back the `Promise<
 
 >Functions [apply](#apply) and [promise](#promise--resolve) accept extra arguments. This allows for the combination of different monads (see [example](#examples))
 
-All
+All (static)
 ---
 A static function to resolve multiple `PromisedMonads` in parallel (Promise.all)
+
+Maybe (static)
+---
+An extension of Monad where pipeline halts when null or undefined is returned. Can be augmented with custom logic by giving a `before` function to the constructor. This can be used like `Monad` but is generally safer
+
+Either (static)
+---
+Either replaces the apply function by accepting two functions. Herein the 'left' function is executed as a fallback to the 'right' function.
+
+The instance of Either has a `fold` function to return back into a `Maybe` or `Monad`
 
 #### Examples
 
@@ -155,6 +165,30 @@ A static function to resolve multiple `PromisedMonads` in parallel (Promise.all)
     console.log(log1)   // [2,3]
     console.log(log2)   // [11,12]
     ```
+  1. Use of a Maybe
+      ```typescript
+      const addOne = (e: number) => e + 1
+      const isNumber = (e) => typeof e === 'number'
+
+      const maybe = new Monad.Maybe('1', null, isNumber)
+
+      const { value } = maybe.apply(addOne)
+
+      console.log(value) // '1'
+      ```
+  1. Use of an Either
+      ```typescript
+      const addOne = (e: number) => e + 1
+      const multiply = (e: number, c: number) => e * c
+
+      const either = new Monad.Either(2)
+        .apply(addOne, multiply, 2)
+        .apply(addOne, addOne)
+
+      console.log(either.value)      // 5
+      console.log(either.fold(true)) // instanceof Maybe
+      console.log(either.fold()) .   // instanceof Monad
+      ```
 
 ## License
 

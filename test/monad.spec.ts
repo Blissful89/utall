@@ -7,6 +7,8 @@ const multiply       = (e: number, c: number) => e * c
 const promisedAddOne = (e: any) => Promise.resolve(e + 1)
 const returnPromise  = (e: any, a?: any) => Promise.resolve(a ? e + a : e)
 const returnNull     = () => null
+const throwsError    = (e: any) => { throw new Error(e) }
+const isNumber       = (e: any) => typeof e === 'number'
 
 describe('Monad', () => {
   it('has no start value', () => {
@@ -14,14 +16,6 @@ describe('Monad', () => {
 
     expect(monad).toHaveProperty('value')
     expect(monad.value).toEqual(undefined)
-  })
-
-  it('can continue without start value', () => {
-    const monad     = new Monad()
-    monad.value     = 1
-    const { value } = monad.apply(addOne)
-
-    expect(value).toEqual(2)
   })
 
   it('can operate a bound function', () => {
@@ -52,15 +46,17 @@ describe('Monad', () => {
     expect(log).toEqual([6, 7])
   })
 
-  it('returns null', () => {
+  it('throws an errors when needed', () => {
     const monad = new Monad(null, [])
 
-    const { value, log } = monad
-      .apply(sum)
-      .apply(addOne)
+    let error
+    try {
+      monad.apply(sum)
+    } catch (e) {
+      error = e
+    }
 
-    expect(value).toEqual(null)
-    expect(log).toEqual([])
+    expect(error).toBeTruthy()
   })
 
   it('returns log when function returns null', () => {
@@ -152,5 +148,86 @@ describe('Monad', () => {
     expect(value2).toEqual(12)
     expect(log1).toEqual([2, 3])
     expect(log2).toEqual([11, 12])
+  })
+})
+
+describe('Monad.Maybe', () => {
+  it('does not run without value', () => {
+    const watcher1 = jest.fn(addOne)
+    const watcher2 = jest.fn(addOne)
+    const watcher3 = jest.fn(addOne)
+
+    const maybe1 = new Monad.Maybe().apply(watcher1)
+    const maybe2 = new Monad.Maybe(null).apply(watcher2)
+    const maybe3 = new Monad.Maybe(false).apply(watcher3)
+
+    expect(watcher1).not.toHaveBeenCalled()
+    expect(watcher2).not.toHaveBeenCalled()
+    expect(watcher3).toHaveBeenCalled()
+    expect(maybe1.value).toEqual(undefined)
+    expect(maybe2.value).toEqual(null)
+    expect(maybe3.value).toEqual(1)
+  })
+
+  it('halts when value is null', () => {
+    const { value, log } = new Monad.Maybe(5, [])
+      .apply(addOne)
+      .apply(addOne)
+      .apply(returnNull)
+      .apply(addOne)
+
+    expect(value).toEqual(null)
+    expect(log).toEqual([6, 7, null])
+  })
+
+  it('can use custom before logic', () => {
+    const { value } = new Monad.Maybe('5', null, isNumber).apply(addOne)
+
+    expect(value).toEqual('5')
+  })
+})
+
+describe('Monad.Either', () => {
+  it('runs right function first', () => {
+    const { value } = new Monad.Either(3).apply(addOne, add, 2)
+
+    expect(value).toEqual(5)
+  })
+
+  it('falls back to left function without error', () => {
+    const { value } = new Monad.Either(3).apply(addOne, throwsError)
+
+    expect(value).toEqual(4)
+  })
+
+  it('throws an error when both left and right functions fail', () => {
+    const either = new Monad.Either(1)
+
+    let error
+    try {
+      either.apply(throwsError, throwsError)
+    } catch (e) {
+      error = e
+    }
+
+    expect(error).toBeTruthy()
+  })
+
+  it('can chain eithers', () => {
+    const { value } = new Monad.Either(1)
+      .apply(addOne, addOne)
+      .apply(addOne, add, 2)
+
+    expect(value).toEqual(4)
+  })
+
+  it('can fold back', () => {
+    const maybe  = new Monad.Either(1).apply(addOne, addOne).fold(true)
+    const monad1 = new Monad.Either(1).apply(addOne, addOne).fold(false)
+    const monad2 = new Monad.Either(1).apply(addOne, addOne).fold()
+
+    expect(maybe.value).toEqual(2)
+    expect(monad1.value).toEqual(2)
+    expect(monad2.value).toEqual(2)
   })
 })

@@ -4,24 +4,12 @@ class Monad<T> {
   value: T
   log
 
-  /**
-   * Monad with promise functionality
-   *
-   * - `.value` current state
-   * - `.log` log of pipeline steps. Use by adding empty array as second parameter
-   * - `.apply(func, ...args)` to apply function to value. Accepts extra arguments
-   * - `.promise(func, ...args)` adds promise to the stack. Converts Monad to PromisedMonad
-   * - `.resolve()` resolves PromisedMonad back to Monad. Returns a Promise
-   * - `.all(promisedMonads)` static. resolves multiple PromisedMonads in parallel
-   */
-  constructor(value?: any, log?: any[]) {
+  constructor(value?: any, log?: any[] | null) {
     this.value = value
     this.log   = log
   }
 
   apply(func: Func, ...args: any) {
-    if (this.value === null) return this
-
     this.value = func(this.value, ...args)
     return this.finish()
   }
@@ -37,6 +25,40 @@ class Monad<T> {
 
   static all<T>(promisedMonads: PromisedMonad<any>[]) {
     return Promise.all<Monad<T>>(promisedMonads.map((monad) => monad.resolve()))
+  }
+
+  static Maybe = class Maybe<M> extends Monad<M> {
+    private before
+
+    constructor(value?: any, log?: any[] | null, before?: Func) {
+      super(value, log)
+      this.before = before
+    }
+
+    apply(func: Func, ...args: any): Maybe<M> {
+      if (this.value === null) return this
+      if (this.value === undefined) return this
+      if (this.before && !this.before(this.value)) return this
+      const { value, log } = super.apply(func, ...args)
+      return new Maybe(value, log)
+    }
+  }
+
+  static Either = class Either<E> extends Monad<E> {
+    apply(leftFunc: Func, rightFunc: Func, ...args: any): Either<E> {
+      try {
+        const { value, log } = super.apply(rightFunc, ...args)
+        return new Either(value, log)
+      } catch {
+        const { value, log } = super.apply(leftFunc, ...args)
+        return new Either(value, log)
+      }
+    }
+
+    fold(maybe = false) {
+      if (maybe) return new Monad.Maybe<E>(this.value, this.log)
+      return new Monad<E>(this.value, this.log)
+    }
   }
 }
 
