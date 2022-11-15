@@ -180,6 +180,18 @@ describe('Monad.Maybe', () => {
     expect(log).toEqual([6, 7, null])
   })
 
+  it('can handle before function', () => {
+    const jestFn         = jest.fn(addOne)
+    const { value, log } = new Monad.Maybe(5, [], isNumber)
+      .apply(addOne)
+      .apply((e) => `${e}`)
+      .apply(jestFn)
+
+    expect(jestFn).not.toHaveBeenCalled()
+    expect(log).toEqual([6, '6'])
+    expect(value).toEqual('6')
+  })
+
   it('can use custom before logic', () => {
     const { value } = new Monad.Maybe('5', null, isNumber).apply(addOne)
 

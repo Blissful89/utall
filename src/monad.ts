@@ -47,7 +47,7 @@ class Maybe<M> extends MonadBase<M> {
     if (this.value === undefined) return this
     if (this.before && !this.before(this.value)) return this
     const { value, log } = super.apply(func, ...args)
-    return new Maybe(value, log)
+    return new Maybe(value, log, this.before)
   }
 }
 
